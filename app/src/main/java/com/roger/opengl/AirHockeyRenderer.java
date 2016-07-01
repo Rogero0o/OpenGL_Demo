@@ -35,7 +35,15 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
       0.5f,0f,
 
       0f,-0.25f,
-      0f,0.25f
+      0f,0.25f,
+
+      -0.6f,-0.6f,
+      0.6f,0.6f,
+      -0.6f,0.6f,
+
+      -0.6f,-0.6f,
+      0.6f,-0.6f,
+      0.6f,0.6f,
   };
 
   private static final String U_COLOR = "u_Color";
@@ -81,6 +89,9 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
   @Override public void onDrawFrame(GL10 gl10) {
     GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
 
+    GLES20.glUniform4f(uColorLocation,0.0f,1.0f,0.0f,1.0f);
+    GLES20.glDrawArrays(GLES20.GL_TRIANGLES,10,6);
+
     GLES20.glUniform4f(uColorLocation,1.0f,1.0f,1.0f,1.0f);
     GLES20.glDrawArrays(GLES20.GL_TRIANGLES,0,6);
 
@@ -92,5 +103,6 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
 
     GLES20.glUniform4f(uColorLocation,1.0f,0.0f,0.0f,1.0f);
     GLES20.glDrawArrays(GLES20.GL_POINTS,9,1);
+
   }
 }
