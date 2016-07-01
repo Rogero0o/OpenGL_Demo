@@ -1,1 +1,1 @@
-include ':AirHockey1'
+include ':AirHockey1', ':AirHockey2'
