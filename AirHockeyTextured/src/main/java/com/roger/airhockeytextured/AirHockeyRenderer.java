@@ -1,4 +1,4 @@
-package com.roger.airhockey3d;
+package com.roger.airhockeytextured;
 
 import android.content.Context;
 import android.opengl.GLES20;
