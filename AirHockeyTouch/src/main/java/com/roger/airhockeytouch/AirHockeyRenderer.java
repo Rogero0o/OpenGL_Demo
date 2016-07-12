@@ -186,9 +186,9 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
   public void handleTouchDrag(float normalizedX, float normalizedY) {
 
     if (malletPressed) {
-      Geometry.Ray ray = convertNormalized2DPointToRay(normalizedX, normalizedY);
+      Geometry.Ray ray = convertNormalized2DPointToRay(normalizedX, normalizedY);//点击坐标转换为射线
       Geometry.Plane plane =
-          new Geometry.Plane(new Geometry.Point(0, 0, 0), new Geometry.Vector(0, 1, 0));
+          new Geometry.Plane(new Geometry.Point(0, 0, 0), new Geometry.Vector(0, 1, 0));//平面
       Geometry.Point touchedPoint = Geometry.intersectionPoint(ray, plane);
       previousBlueMalletPosition = blueMalletPosition;
       blueMalletPosition = new Geometry.Point(
