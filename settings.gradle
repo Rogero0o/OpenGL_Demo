@@ -1,4 +1,5 @@
 include ':AirHockey1', ':AirHockey2', ':AirHockeyOrtho', ':AirHockey3D', ':AirHockeyTextured',
+    ':LiveWallPaper',
     ':Lighting',
     ':Heightmap',
     ':Skybox',
