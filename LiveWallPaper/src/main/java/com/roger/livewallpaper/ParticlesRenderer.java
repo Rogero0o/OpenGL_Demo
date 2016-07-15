@@ -6,6 +6,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.os.SystemClock;
+import android.util.Log;
 import com.roger.livewallpaper.objects.Heightmap;
 import com.roger.livewallpaper.objects.ParticleShooter;
 import com.roger.livewallpaper.objects.ParticleSystem;
@@ -16,6 +18,7 @@ import com.roger.livewallpaper.programs.SkyboxShaderProgram;
 import com.roger.livewallpaper.util.Geometry;
 import com.roger.livewallpaper.util.Geometry.Point;
 import com.roger.livewallpaper.util.Geometry.Vector;
+import com.roger.livewallpaper.util.LoggerConfig;
 import com.roger.livewallpaper.util.MatrixHelper;
 import com.roger.livewallpaper.util.TextureHelper;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -130,7 +133,7 @@ public class ParticlesRenderer implements GLSurfaceView.Renderer {
 
     // We want the translation to apply to the regular view matrix, and not
     // the skybox.
-    translateM(viewMatrix, 0, 0, -1.5f, -5f);
+    translateM(viewMatrix, 0, 0 - xOffset, -1.5f - yOffset, -5f);
   }
 
   @Override public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
@@ -178,10 +181,36 @@ public class ParticlesRenderer implements GLSurfaceView.Renderer {
   }
 
   @Override public void onDrawFrame(GL10 gl10) {
+    limitFrameRate(24);
+    logFrameRate();
     GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
     drawHeightmap();
     drawSkybox();
     drawParticles();
+  }
+
+  private void limitFrameRate(int framesPerSecond) {
+    long elapsedFrameTimeMs = SystemClock.elapsedRealtime() - frameStartTimeMs;
+    long expectedFrameTimeMs = 1000 / framesPerSecond;
+    long timeToSleepMs = expectedFrameTimeMs - elapsedFrameTimeMs;
+
+    if (timeToSleepMs > 0) {
+      SystemClock.sleep(timeToSleepMs);
+    }
+    frameStartTimeMs = SystemClock.elapsedRealtime();
+  }
+  private void logFrameRate() {
+    if (LoggerConfig.ON) {
+      long elapsedRealtimeMs = SystemClock.elapsedRealtime();
+      double elapsedSeconds = (elapsedRealtimeMs - startTimeMs) / 1000.0;
+
+      if (elapsedSeconds >= 1.0) {
+        Log.v("Tag", frameCount / elapsedSeconds + "fps");
+        startTimeMs = SystemClock.elapsedRealtime();
+        frameCount = 0;
+      }
+      frameCount++;
+    }
   }
 
   private void drawHeightmap() {
